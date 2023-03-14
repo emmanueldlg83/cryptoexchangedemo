@@ -1,0 +1,9 @@
+CREATE OR REPLACE VIEW CryptoMarket_View AS
+SELECT exchange, time, market,
+       MAX(CASE WHEN type = 'bid' THEN price END) AS max_bid,
+       MIN(CASE WHEN type = 'ask' THEN price END) AS min_ask,
+       AVG(CASE WHEN type = 'bid' THEN price END) AS avg_bid,
+       AVG(CASE WHEN type = 'ask' THEN price END) AS avg_ask,
+       (AVG(CASE WHEN type = 'bid' THEN price END) + AVG(CASE WHEN type = 'ask' THEN price END)) / 2 AS mid_price
+FROM orderbookdata
+GROUP BY exchange, time, market;
